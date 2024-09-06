@@ -1,0 +1,50 @@
+Se han elaborado 4 scripts para la obtención y procesado de imagenes de Landsat 7 y 8 para las zonas de estudio en GEE:
+
+1. "dehesas_timeSeries"
+Estimación el índice NDVI en imagenes Landsat 7 y Landsat 8 de cada parcela en el periodo temporal de estudio, para la selección de la ventana temporal de máximo NDVI estacional.
+
+https://code.earthengine.google.com/2261ac2e7cb8ddf70c26a2bbe70eea5c
+
+
+2. "dehesas_imagenes_wMask"
+Filtrado y seleccion de imagenes Landsat 7 y Landsat 8 que superen un umbral mínimo ( actualmente de NDVI >0.4) en todos los píxeles incluidos en un buffer de X metros.  
+
+https://code.earthengine.google.com/a32fbb92a60227b399099af0631a72ce
+
+
+3. "dehesas_indexes_batch"
+Procesado de las imágenes seleccionadas por lotes. El script extrae los valores promedio de bandas y diversos índices en un buffer de X metros en las areas de estudio. Posteriormente, se enmascaran los píxeles con nubes y cuerpos de agua y se estima el número de píxeles válidos tras las máscaras. Adicionalmente, se estima la fracción de cabida cubierta como el porcentaje de pixeles del MDV del PNOA  (res 2.5m) por encima de 1 metro de elevación respecto al total. El script devuelve u csv con los valores promedio de bandas, indices, fcc y total de pixeles válidos.
+Es posible enmascarar la imagen por una máscara binaria de presencia/ausencia de arbolado a escala de 30m, pero esta funcionalidad no está completamente implementada. 
+
+https://code.earthengine.google.com/b0a99be704cd0d02591dd8f2511ba6a1
+
+
+4. "descarga_parcelaEstudio"
+
+Descarga del un archivo raster con las bandas e indices de interés para su uso en predicciones a nivel de pixel. 
+
+https://code.earthengine.google.com/3d4cedd0c5ffea7f58e72d00f761ce73
+
+
+// Assets necesarios:
+
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/atoquedo_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/la_ciervina_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/la_cana_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/la_villa_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/las_casillas_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/valdelacasa_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/landsat7_imagenes
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/landsat8_imagenes
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/deheson_C2_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/deheson_C5_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/deheson_S3_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/deheson_S7_point
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/deheson_O6_point
+
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/tree_mask_proj32630_30
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/tree_mask_2c5
+
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/tree_mask_2c5
+https://code.earthengine.google.com/?asset=projects/preprocesado-guillesrf/assets/atoquedo_recinto
+

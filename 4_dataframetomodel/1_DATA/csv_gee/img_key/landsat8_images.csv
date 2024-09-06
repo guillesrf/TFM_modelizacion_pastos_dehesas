@@ -1,0 +1,7 @@
+Year,Parcelas,landsat,img_name,Farm_code
+2013,projects/preprocesado-guillesrf/assets/atoquedo_point,8,LANDSAT/LC08/C02/T1_L2/LC08_202032_20130521,atoquedo_2013
+2014,projects/preprocesado-guillesrf/assets/atoquedo_point,8,LANDSAT/LC08/C02/T1_L2/LC08_202032_20140508,atoquedo_2014
+2014,projects/preprocesado-guillesrf/assets/valdelacasa_point,8,LANDSAT/LC08/C02/T1_L2/LC08_202032_20140625,valdelacasa_2014
+2015,projects/preprocesado-guillesrf/assets/valdelacasa_point,8,LANDSAT/LC08/C02/T1_L2/LC08_202032_20150527,valdelacasa_2015
+2013,projects/preprocesado-guillesrf/assets/deheson_O6_point,8,LANDSAT/LC08/C02/T1_L2/LC08_202032_20130606,deheson_O6_2013
+2014,projects/preprocesado-guillesrf/assets/las_casillas_point,8,LANDSAT/LC08/C02/T1_L2/LC08_202033_20140508,las_casillas_2014
