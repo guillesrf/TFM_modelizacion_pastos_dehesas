@@ -1,0 +1,4 @@
+Los datos de suelo (4.29 GB) pueden ser descargados de:
+
+https://esdac.jrc.ec.europa.eu/content/topsoil-physical-properties-europe-based-lucas-topsoil-data
+https://esdac.jrc.ec.europa.eu/content/chemical-properties-european-scale-based-lucas-topsoil-data
