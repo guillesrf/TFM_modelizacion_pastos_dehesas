@@ -1,0 +1,1 @@
+& "C:\Program Files (x86)\GnuWin32\bin\wget.exe" --no-host-directories --force-directories --no-check-certificate --input-file="C:\TFM\wget_chelsa\future126_585_monthly.txt" --directory-prefix="C:\TFM\wget_chelsa"

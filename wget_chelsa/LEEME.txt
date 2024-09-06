@@ -1,0 +1,10 @@
+Esta carpeta contiene los archivos: 
+script_SHELL.txt
+future585_monthly
+monthly_tas_tasmax_tasmin_pr.txt
+
+Para descarga los rasters globales de CHELSA v2, instala WGET para Windows (https://gnuwin32.sourceforge.net/packages/wget.htm), y sustituye las rutas de "script_SHELL.txt". En "--input-file=" selecciona. 
+- "monthly_tas_tasmax_tasmin_pr.txt"
+-  future585 para la descarga de los datos climáticos modelizados para 2071-20100 bajo el escenario gfdl-esm4 y ssp585.
+ 
+Finalmente, copia el contenido de "script_SHELL.txt" , pégalo en PowerShell de Windows y ejecutalo. La descarga tiene un peso total de 240 GB.

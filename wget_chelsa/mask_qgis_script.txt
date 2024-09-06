@@ -1,0 +1,74 @@
+import os
+import glob
+from qgis.core import (
+    QgsProject,
+    QgsVectorLayer,
+    QgsRasterLayer,
+    QgsProcessingFeatureSourceDefinition,
+    QgsProcessingFeedback
+)
+from qgis import processing
+
+# Input variables
+shapefile_path = 'path/to/your/shapefile.shp'  # Replace with the path to your shapefile
+input_folder = 'path/to/your/tif_folder'  # Replace with the path to the folder containing your .tif files
+output_folder = 'C:/TFM/wget_chelsa/chelsa_spain'  # Replace with the path to the folder where you want to save the output
+
+# Create the output directory if it doesn't exist
+os.makedirs(output_folder, exist_ok=True)
+
+# Load the shapefile
+vector_layer = QgsVectorLayer(shapefile_path, "mask_layer", "ogr")
+if not vector_layer.isValid():
+    raise Exception(f"Failed to load shapefile: {shapefile_path}")
+
+# Get all .tif files in the input folder (excluding .tif.aux)
+tif_files = glob.glob(os.path.join(input_folder, "*.tif"))
+
+# Processing feedback
+feedback = QgsProcessingFeedback()
+
+# Loop over all .tif files
+for tif_file in tif_files:
+    # Load the raster layer
+    raster_layer = QgsRasterLayer(tif_file, "raster_layer")
+    if not raster_layer.isValid():
+        print(f"Failed to load raster: {tif_file}")
+        continue
+
+    # Get raster resolution
+    x_res = raster_layer.rasterUnitsPerPixelX()
+    y_res = raster_layer.rasterUnitsPerPixelY()
+
+
+    # Define the output path
+    base_name = os.path.splitext(os.path.basename(tif_file))[0]
+    output_file = os.path.join(output_folder, f"{base_name}_masked_spain.tif")
+
+    # Mask the raster with the shapefile
+    processing.run(
+        "gdal:cliprasterbymasklayer",
+        {
+            'INPUT': tif_file,
+               'MASK':QgsProcessingFeatureSourceDefinition(vector_layer.source()),
+                'SOURCE_CRS': raster_layer.crs().toWkt(),
+                'TARGET_CRS': raster_layer.crs().toWkt(),
+                'NODATA': None,
+                'ALPHA_BAND': False,
+                'CROP_TO_CUTLINE': True,
+                'KEEP_RESOLUTION': False,
+                'SET_RESOLUTION': True,
+                'X_RESOLUTION': x_res,
+                'Y_RESOLUTION': y_res,
+                'MULTITHREADING': False,  
+                'OPTIONS': '',
+                'DATA_TYPE': 0,  # Use original data type
+                'EXTRA': '',
+                'OUTPUT': output_file
+        },
+        feedback=feedback
+    )
+
+    print(f"Masked file saved: {output_file}")
+
+print("Processing complete.")
