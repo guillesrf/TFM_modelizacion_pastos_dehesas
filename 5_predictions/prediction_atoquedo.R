@@ -180,7 +180,7 @@ ggplot(data_predict_long, aes(x = Year, y = Value, fill = Type)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels
         legend.position = "bottom",
         plot.title = element_text(size = 11, face = "bold", hjust = 0.5, lineheight = 1.2)) + 
-  ggtitle('Serie reconstruida 2014-2024 de valores de biomasa de pasto \n observados vs estimados en la parcela Atoquedo')  
+  ggtitle('Serie 2014-2024 de valores de biomasa de pasto en primavera \n observados vs estimados en la parcela Atoquedo')  
 
 
 
@@ -307,12 +307,12 @@ rm(clim_raster)
 ######################
 
 
-study_years <- unique(climate_spei_plot$Year)
+
 
 
 # nos aseguramso que esten incluidos los mismos años
 years_clim <- unique(climate_spei_plot$Year)   # años con datos clima
-
+study_years <- years_clim[-c(1:4,15)]
 
 # Convert list of SpatRaster objects to tibble, add years as identifiers, and subset
 clim_subset <- tibble::tibble(value = list_clim_raster, year = years_clim) %>% 
@@ -325,7 +325,7 @@ clim_subset <- tibble::tibble(value = list_clim_raster, year = years_clim) %>%
 #funcion para crear el stack
 it <- 1
 stack_list <- list()
-for (yr in years) {
+for (yr in study_years) {
   plotname <- paste0('stack_',study_plot,'_',yr)
   stack  <- c(spectral_final[[it]],
               soil_final[[1]],
@@ -354,9 +354,21 @@ for (yr in years) {
 prediction_atoquedo <- lapply(stack_list, FUN= predict,model= gam1)
 plot(prediction_atoquedo[[6]])
 
+####
+#4. estadisticas zonales 
+####
+
+
+zonal_stats <- lapply(prediction_atoquedo, function(raster) {
+  stats <- global(raster, fun=c('mean', 'min', 'max', 'sd'), na.rm=TRUE)
+  return(stats)
+})
+zonal_stats_df <- do.call(rbind, zonal_stats)
+summary(zonal_stats_df)
+write.csv(zonal_stats_df,'./2_RESULTS/yield_atoquedo2004_2014.csv')
 
 ####
-##4.  guardar resultados
+##5.  guardar resultados
 ####
 
 for (i in names(prediction_atoquedo)) {
@@ -367,7 +379,7 @@ for (i in names(prediction_atoquedo)) {
 }
 
 ####
-# 5. Representar
+# 6. Representar
 ###
 # unimos en un df 
 
@@ -382,7 +394,7 @@ raster_df <- raster_tibble %>%
   mutate(raster = map(raster, ~ as.data.frame(.x, xy = TRUE))) %>%
   unnest(raster) %>%
   rename(x = x, y = y, value = lyr1) %>%
-  mutate(id = factor(id, levels = 1:11, labels = years))
+  mutate(id = factor(id, levels = 1:11, labels = study_years))
 
 # aoi for plotting:
 aoi_plot <- st_read('1_DATA/atoquedo/atoquedo_recinto_grande_25830.shp')
@@ -410,7 +422,7 @@ north_arrow <- function() {
 ggplot(raster_df, aes(x = x, y = y, fill = value)) +
   geom_raster() +
   geom_polygon(data = aoi_df, aes(x = x, y = y), fill = NA, color = "black") + # Add polygon background
-  facet_wrap(~ id, ncol = 3, labeller = as_labeller(setNames(years, as.character(1:11)))) +
+  facet_wrap(~ id, ncol = 3, labeller = as_labeller(setNames(study_years, as.character(1:11)))) +
   scale_fill_gradientn(colors = brewer.pal(9, "RdYlGn")) + # Use ColorBrewer's Greens palette
   coord_fixed(ratio = 1) + # Ensures 1 unit of x = 1 unit of y
   theme_minimal() +
